@@ -1,5 +1,6 @@
 import os
 import sys
+import datetime
 import transaction
 
 from pyramid.paster import (
@@ -15,7 +16,7 @@ from ..models import (
     get_session_factory,
     get_tm_session,
     )
-from ..models import Expense
+from ..models import Entry
 
 
 def usage(argv):
@@ -34,12 +35,18 @@ def main(argv=sys.argv):
     settings = get_appsettings(config_uri, options=options)
 
     engine = get_engine(settings)
+    Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
     session_factory = get_session_factory(engine)
 
     with transaction.manager:
+        from expense_tracker.views.default import ENTRY
         dbsession = get_tm_session(session_factory, transaction.manager)
 
-        model = MyModel(name='one', value=1)
-        dbsession.add(model)
+        for a_entry in ENTRY:
+            entry = Entry(
+                date=datetime.datetime.now(),
+                text=a_entry['text']
+            )
+            dbsession.add(entry)

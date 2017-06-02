@@ -3,16 +3,17 @@ from sqlalchemy import (
     Index,
     Integer,
     Unicode,
+    DateTime
 )
 
 from .meta import Base
 
 
 
-class Expense(Base):
-    __tablename__ = 'expense'
-    id = Column(Integer, primary_key=True)
-    date = Column(Unicode)
+class Entry(Base):
+    __tablename__ = 'entries'
+    entry_id = Column(Integer, primary_key=True)
+    date = Column(DateTime)
     text = Column(Unicode)
 
 

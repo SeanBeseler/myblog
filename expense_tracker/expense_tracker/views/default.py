@@ -3,19 +3,26 @@
 from pyramid.view import view_config
 from pyramid.response import Response
 from pyramid.httpexceptions import HTTPNotFound
+from ..models import Entry
+import datetime
 
-#ENTRY =[
-#    {'id': 0, 'date': '5/24/17', 'text': 'Entry Here'},
-#    {'id': 1, 'date': '5/25/17', 'text': 'Entry Here'},
-#    {'id': 2, 'date': '5/26/17', 'text': 'Entry Here'},
-#    {'id': 3, 'date': '5/27/17', 'text': 'Entry Here'},
-#    {'id': 4, 'date': '5/28/17', 'text': 'Entry Here'},
-#    {'id': 5, 'date': '5/29/17', 'text': 'Entry Here'},
-#    {'id': 6, 'date': '5/30/17', 'text': 'Entry Here'},
-#    {'id': 7, 'date': '5/31/17', 'text': 'Entry Here'},
-#    {'id': 8, 'date': '6/1/17', 'text': 'Entry Here'}
-    
-#    ]
+ENTRY =[
+   {'entry_id': 0, 'date': '5/24/17', 'text': 'Entry Here'},
+   {'entry_id': 1, 'date': '5/25/17', 'text': 'Entry Here'},
+   {'entry_id': 2, 'date': '5/26/17', 'text': 'Entry Here'},
+   {'entry_id': 3, 'date': '5/27/17', 'text': 'Entry Here'},
+   {'entry_id': 4, 'date': '5/28/17', 'text': 'Entry Here'},
+   {'entry_id': 5, 'date': '5/29/17', 'text': 'Entry Here'},
+   {'entry_id': 6, 'date': '5/30/17', 'text': 'Entry Here'},
+   {'entry_id': 7, 'date': '5/31/17', 'text': 'Entry Here'},
+   {'entry_id': 8, 'date': '6/1/17', 'text': 'Entry Here'}
+]
+
+# for item in ENTRY:
+#     new_expense = Entry(
+#         date=datetime.datetime.now(),
+#         text=item['text']
+#     )
 @view_config(route_name='home',renderer='../templates/index.jinja2')
 def list_view_page(request):
     """Retruns the index.html as the home page"""
