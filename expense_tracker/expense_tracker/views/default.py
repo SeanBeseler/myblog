@@ -18,25 +18,23 @@ ENTRY =[
    {'entry_id': 8, 'date': '6/1/17', 'text': 'Entry Here'}
 ]
 
-# for item in ENTRY:
-#     new_expense = Entry(
-#         date=datetime.datetime.now(),
-#         text=item['text']
-#     )
+
 @view_config(route_name='home',renderer='../templates/index.jinja2')
 def list_view_page(request):
+    all_entries = request.dbsession.query(Entry).all()
     """Retruns the index.html as the home page"""
-    return {'entry': ENTRY}
+    return {'entry': all_entries}
 
 @view_config(route_name='detail',renderer='../templates/post.jinja2')
 def detail_view_page(request):
     """Retruns the about.html as the home page"""
-    try:
-        the_id = int(request.matchdict['id'])
-        entrys = ENTRY[the_id]
-        return {'entry': entrys}
-    except IndexError:
-        raise HTTPNotFound
+    the_id = int(request.matchdict['entry_id'])
+    session = request.dbsession
+    # print(request)
+    entry = session.query(Entry).get(the_id)
+    return {
+        'entry': entry
+    }
 
 @view_config(route_name='create',renderer='../templates/New.jinja2')
 def create_view_page(request):

@@ -84,7 +84,7 @@
           <p>Sean Beseler - 5/30/17</p><br>
           <p> To day we started Pyarmid! This is the first subject which is completly new!</p>
               {% for entries in entry %}
-                <li>Sean Beseler {{entries.date}}: {{entries.text}}<a href="{{request.route_url('detail',id = entries.id)}}"><button> See This Post</button></a></li>
+                <li>Sean Beseler {{entries.date}}: {{entries.text}}<a href="{{request.route_url('detail', entry_id = entries.entry_id)}}"><button> See This Post</button></a></li>
               {% endfor %}
                 <!-- Pager -->
                 <ul class="pager">
