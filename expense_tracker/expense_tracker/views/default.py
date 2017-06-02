@@ -1,34 +1,43 @@
 
 """my files"""
-import io
-import os
+from pyramid.view import view_config
 from pyramid.response import Response
-HERE = os.path.dirname(__file__)
-Path = os.path.dirname(HERE)
-NPath = os.path.join(Path, 'templates', 'index.html')
-EPath = os.path.join(Path, 'templates', 'post.html')
-SPath = os.path.join(Path, 'templates', 'New.html')
-WPath = os.path.join(Path,'templates', 'about.html')
+from pyramid.httpexceptions import HTTPNotFound
+
+#ENTRY =[
+#    {'id': 0, 'date': '5/24/17', 'text': 'Entry Here'},
+#    {'id': 1, 'date': '5/25/17', 'text': 'Entry Here'},
+#    {'id': 2, 'date': '5/26/17', 'text': 'Entry Here'},
+#    {'id': 3, 'date': '5/27/17', 'text': 'Entry Here'},
+#    {'id': 4, 'date': '5/28/17', 'text': 'Entry Here'},
+#    {'id': 5, 'date': '5/29/17', 'text': 'Entry Here'},
+#    {'id': 6, 'date': '5/30/17', 'text': 'Entry Here'},
+#    {'id': 7, 'date': '5/31/17', 'text': 'Entry Here'},
+#    {'id': 8, 'date': '6/1/17', 'text': 'Entry Here'}
+    
+#    ]
+@view_config(route_name='home',renderer='../templates/index.jinja2')
 def list_view_page(request):
     """Retruns the index.html as the home page"""
-    with io.open(NPath) as the_file:
-        imported_text = the_file.read()
-    return Response(imported_text)
+    return {'entry': ENTRY}
 
+@view_config(route_name='detail',renderer='../templates/post.jinja2')
 def detail_view_page(request):
     """Retruns the about.html as the home page"""
-    with io.open(EPath) as the_file:
-        imported_text = the_file.read()
-    return Response(imported_text)
+    try:
+        the_id = int(request.matchdict['id'])
+        entrys = ENTRY[the_id]
+        return {'entry': entrys}
+    except IndexError:
+        raise HTTPNotFound
 
+@view_config(route_name='create',renderer='../templates/New.jinja2')
 def create_view_page(request):
     """Retruns the new.html as the home page"""
-    with io.open(SPath) as the_file:
-        imported_text = the_file.read()
-    return Response(imported_text)
+    return {'entry': ENTRY}
 
+@view_config(route_name='update',renderer='../templates/about.jinja2')
 def update_view_page(request):
     """Retruns the post.html as the home page"""
-    with io.open(WPath) as the_file:
-        imported_text = the_file.read()
-    return Response(imported_text)
+    return {'entry': ENTRY}
+
