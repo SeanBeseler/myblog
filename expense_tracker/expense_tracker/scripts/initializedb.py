@@ -46,6 +46,7 @@ def main(argv=sys.argv):
 
         for a_entry in ENTRY:
             entry = Entry(
+                title='{} - {}'.format('Sean Beseler', entry['date'])
                 date=datetime.datetime.now(),
                 text=a_entry['text']
             )
