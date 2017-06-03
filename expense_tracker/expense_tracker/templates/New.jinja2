@@ -80,19 +80,20 @@
             </div>
         </div>
     </header>
-
-   <form action="" id="usrform">
-  Name: <input type="text" name="usrname">
+{% block  content %}
+<form method="POST" id="usrform">
+  Name: <input type="text" name="usrname" required/>
   <input type="submit">
 </form>
+{% endblock %}
 <br>
-<textarea rows="4" cols="50" name="comment" form="usrform">
+<textarea rows="4" cols="50" name="j_entry" form="usrform" required>
 Enter text here...</textarea>
               
                 <!-- Pager -->
                 <ul class="pager">
                     <li class="next">
-                        <a href="#">Older Posts &rarr;</a>
+                        <input type="submit" value="Add-Entry">
                     </li>
                 </ul>
             </div>

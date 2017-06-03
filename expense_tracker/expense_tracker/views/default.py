@@ -2,7 +2,10 @@
 """my files"""
 from pyramid.view import view_config
 from pyramid.response import Response
-from pyramid.httpexceptions import HTTPNotFound
+from pyramid.httpexceptions import (
+    HTTPNotFound,
+    HTTPFound
+)
 from ..models import Entry
 import datetime
 
@@ -42,7 +45,15 @@ def detail_view_page(request):
 @view_config(route_name='create',renderer='../templates/New.jinja2')
 def create_view_page(request):
     """Reruns the new.html as the home page"""
-    return {'entry': ENTRY}
+    if request.method == "POST" and request.POST:
+        new_entry = Entry(
+            title=request.POST["usrname"],
+            text=request.POST["j_entry"],
+            date=datetime.datetime.now()
+        )
+        request.dbsessions.add(new_entry)
+
+    return {}
 
 @view_config(route_name='update',renderer='../templates/about.jinja2')
 def update_view_page(request):
