@@ -22,8 +22,10 @@ ENTRY =[
 @view_config(route_name='home',renderer='../templates/index.jinja2')
 def list_view_page(request):
     all_entries = request.dbsession.query(Entry).all()
-    """Retruns the index.html as the home page"""
-    return {'entry': all_entries}
+    """Returns the index.html as the home page"""
+    for temp_entry in all_entries:
+        temp_entry.date = temp_entry.date.strftime("%b/%m/%Y")
+    return {'entries': all_entries }
 
 @view_config(route_name='detail',renderer='../templates/post.jinja2')
 def detail_view_page(request):
@@ -32,13 +34,14 @@ def detail_view_page(request):
     session = request.dbsession
     # print(request)
     entry = session.query(Entry).get(the_id)
+    entry.date = entry.date.strftime("%b/%m/%Y")
     return {
         'entry': entry
     }
 
 @view_config(route_name='create',renderer='../templates/New.jinja2')
 def create_view_page(request):
-    """Retruns the new.html as the home page"""
+    """Reruns the new.html as the home page"""
     return {'entry': ENTRY}
 
 @view_config(route_name='update',renderer='../templates/about.jinja2')
