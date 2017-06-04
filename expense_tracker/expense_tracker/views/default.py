@@ -54,7 +54,6 @@ def create_view_page(request):
         )
         
         request.dbsession.add(new_entry)
-        import pdb; pdb.set_trace()
         return HTTPFound(
             location=request.route_url("home")
         )
