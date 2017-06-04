@@ -42,7 +42,7 @@
                     <span class="sr-only">Toggle navigation</span>
                     Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="/journal/new-entry">New entry</a>
+                <a class="navbar-brand" href="/journal/Add-Entry">New entry</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -50,12 +50,6 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <a href="/">Home</a>
-                    </li>
-                    <li>
-                        <a href="journal/{id:\d+}/edit-entry">Edit Page</a>
-                    </li>
-                    <li>
-                        <a href="/journal/{id:\d+}">Newest Post</a>
                     </li>
 
                 </ul>
@@ -81,16 +75,12 @@
         </div>
     </header>
 
-          <p>Sean Beseler - 5/30/17</p><br>
-          <p> To day we started Pyarmid! This is the first subject which is completly new!</p>
               {% for entry in entries %}
                 <li>Sean Beseler {{entry.date}}: {{entry.text}}<a href="{{request.route_url('detail', entry_id = entry.entry_id)}}"> <button>See This Post</button></a></li>
               {% endfor %}
                 <!-- Pager -->
                 <ul class="pager">
-                    <li class="next">
-                        <a href="#">Older Posts &rarr;</a>
-                    </li>
+
                 </ul>
             </div>
         </div>

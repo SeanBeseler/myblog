@@ -9,16 +9,16 @@ from pyramid.httpexceptions import (
 from ..models import Entry
 import datetime
 
-ENTRY =[
-   {'entry_id': 0, 'date': '5/24/17', 'text': 'Entry Here'},
-   {'entry_id': 1, 'date': '5/25/17', 'text': 'Entry Here'},
-   {'entry_id': 2, 'date': '5/26/17', 'text': 'Entry Here'},
-   {'entry_id': 3, 'date': '5/27/17', 'text': 'Entry Here'},
-   {'entry_id': 4, 'date': '5/28/17', 'text': 'Entry Here'},
-   {'entry_id': 5, 'date': '5/29/17', 'text': 'Entry Here'},
-   {'entry_id': 6, 'date': '5/30/17', 'text': 'Entry Here'},
-   {'entry_id': 7, 'date': '5/31/17', 'text': 'Entry Here'},
-   {'entry_id': 8, 'date': '6/1/17', 'text': 'Entry Here'}
+ENTRY = [
+   {'date': '5/24/17', 'text': 'Entry Here'},
+   {'date': '5/25/17', 'text': 'Entry Here'},
+   {'date': '5/26/17', 'text': 'Entry Here'},
+   {'date': '5/27/17', 'text': 'Entry Here'},
+   {'date': '5/28/17', 'text': 'Entry Here'},
+   {'date': '5/29/17', 'text': 'Entry Here'},
+   {'date': '5/30/17', 'text': 'Entry Here'},
+   {'date': '5/31/17', 'text': 'Entry Here'},
+   {'date': '6/1/17', 'text': 'Entry Here'}
 ]
 
 
@@ -30,17 +30,18 @@ def list_view_page(request):
         temp_entry.date = temp_entry.date.strftime("%b/%m/%Y")
     return {'entries': all_entries }
 
+
 @view_config(route_name='detail',renderer='../templates/post.jinja2')
 def detail_view_page(request):
     """Retruns the about.html as the home page"""
     the_id = int(request.matchdict['entry_id'])
     session = request.dbsession
-    # print(request)
     entry = session.query(Entry).get(the_id)
     entry.date = entry.date.strftime("%b/%m/%Y")
     return {
         'entry': entry
     }
+
 
 @view_config(route_name='create',renderer='../templates/New.jinja2')
 def create_view_page(request):
@@ -51,12 +52,33 @@ def create_view_page(request):
             text=request.POST["j_entry"],
             date=datetime.datetime.now()
         )
-        request.dbsessions.add(new_entry)
+        
+        request.dbsession.add(new_entry)
+        import pdb; pdb.set_trace()
+        return HTTPFound(
+            location=request.route_url("home")
+        )
 
     return {}
 
+
 @view_config(route_name='update',renderer='../templates/about.jinja2')
 def update_view_page(request):
-    """Retruns the post.html as the home page"""
-    return {'entry': ENTRY}
+    """Returns the post.html as the home page"""
+    session = request.dbsession
+    the_id = int(request.matchdict['id'])
+    # print(request)
+    entry = session.query(Entry).get(the_id)
+    if not entry:
+        raise HTTPNotFound
+    entry.date = entry.date.strftime("%b/%m/%Y")
+    if request.method == "GET":
+        return {
+            'entry_id': entry.entry_id,
+            'text': entry.text
+               }
+    if request.method == "POST":
+        entry.entry_id = request.POST['entry_id']
+        entry.text = request.POST['text']
+        return HTTPFound(request.route_url('detail',id=entry.entry_id))
 
